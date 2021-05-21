@@ -39,5 +39,15 @@ public class ProductService {
 			return null;
 		}
 		
-	} 
+	}
+	
+	public Product findBook(String id) {
+		try {
+			return productdao.findBook(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

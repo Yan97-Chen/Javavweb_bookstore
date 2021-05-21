@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
@@ -55,6 +56,12 @@ public class ProductDao {
 		
 		return qr.query(sql, new BeanListHandler<Product>(Product.class),params.toArray());
 		
+	}
+	
+	public Product findBook(String id) throws SQLException {
+		QueryRunner qr = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select * from products where id = ?";
+		return qr.query(sql, new BeanHandler<Product>(Product.class),id);
 	}
 	
 	public static void main(String[] args) throws SQLException {

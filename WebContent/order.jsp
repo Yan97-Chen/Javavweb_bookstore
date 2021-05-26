@@ -6,7 +6,13 @@
 <title>电子书城</title>
 <link rel="stylesheet" href="css/main.css" type="text/css" />
 
-
+<script type="text/javascript">
+//通过js来提交表单，而不是通过submit来提交
+	function createOrder(){
+	//获取表单标签，调用submit方法
+	document.getElementById('orderForm').submit();
+}
+</script>
 
 </head>
 
@@ -25,13 +31,13 @@
 							href="cart.jsp">&nbsp;购物车</a>&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&nbsp;订单
 					</div>
 
-					<form id="orderForm" action="#" method="post">
+					<form id="orderForm" action="${pageContext.request.contextPath }/createOrder" method="post">
 						<table cellspacing="0" class="infocontent">
 							<tr>
 								<td><table width="100%" border="0" cellspacing="0">
 										<tr>
 											<td><img src="images/buy2.gif" width="635" height="38" />
-												<p>您好：xxx先生！欢迎您来到商城结算中心</p></td>
+												<p>您好：${user.username }！欢迎您来到商城结算中心</p></td>
 										</tr>
 										<tr>
 											<td><table cellspacing="1" class="carttable">
@@ -47,23 +53,30 @@
 												</table>
 
 												<table width="100%" border="0" cellspacing="0">
-													<tr>
-														<td width="10%">1</td>
-														<td width="40%">Thinking In Java</td>
-														<td width="10%">100</td>
-														<td width="10%">计算机</td>
+												<!-- 定义一个总价格变量 -->
+												<c:set var="totalPrice" value="0"></c:set>
+												<c:forEach items="${cart }" var="entry" varStatus="us">
+																									<tr>
+														<td width="10%">${vs.count }</td>
+														<td width="40%">${entry.key.name }</td>
+														<td width="10%">${entry.key.price }</td>
+														<td width="10%">${entry.key.category }</td>
 														<td width="10%"><input name="text" type="text"
-															value="10" style="width: 20px" readonly="readonly" /></td>
-														<td width="10%">1000</td>
+															value="${entry.value }" style="width: 20px" readonly="readonly" /></td>
+														<td width="10%">${entry.key.price * entry.value }</td>
 
 													</tr>
+													<!-- 累计总价格 -->
+													<c:set var="totalPrice" value="${totalPrice + entry.key.price * entry.value }"></c:set>
+												</c:forEach>
+
 												</table>
 
 
 												<table cellspacing="1" class="carttable">
 													<tr>
 														<td style="text-align: right; padding-right: 40px;"><font
-															style="color: #FF0000">合计：&nbsp;&nbsp;1000元</font></td>
+															style="color: #FF0000">合计：&nbsp;&nbsp;${totalPrice }元</font></td>
 													</tr>
 												</table>
 
@@ -80,7 +93,7 @@
 												<hr />
 												<p style="text-align: right">
 													<img src="images/gif53_029.gif" width="204" height="51"
-														border="0" />
+														border="0" onclick="createOrder()"/>
 												</p></td>
 										</tr>
 									</table></td>

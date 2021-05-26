@@ -11,6 +11,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.cyd.bookstore.model.Product;
 import com.cyd.bookstore.utils.C3P0Utils;
+import com.cyd.bookstore.utils.ManagerThreadLocal;
 
 public class ProductDao {
 
@@ -64,17 +65,31 @@ public class ProductDao {
 		return qr.query(sql, new BeanHandler<Product>(Product.class),id);
 	}
 	
-	public static void main(String[] args) throws SQLException {
-		ProductDao dao = new ProductDao();
-		long count = dao.count(null);
-		System.out.println(count);
-//		String category = "计算机";
-//		long count = dao.count(category);
-//		
-//		List<Product> books = dao.findBooks(category, 1, 4);
-//		for(Product b : books) {
-//			System.out.println(b);
-		}
+//	public static void main(String[] args) throws SQLException {
+//		ProductDao dao = new ProductDao();
+//		long count = dao.count(null);
+//		System.out.println(count);
+////		String category = "计算机";
+////		long count = dao.count(category);
+////		
+////		List<Product> books = dao.findBooks(category, 1, 4);
+////		for(Product b : books) {
+////			System.out.println(b);
+//		}
+	
+	/*/
+	 * 更新库存
+	 * productID 商品id
+	 * num 减的数量
+	 */
+	public void updatePNum(int productId, int num) throws SQLException {
+
+		String sql = "update products set pnum = pnum - ? where id = ?";
+		
+		QueryRunner qr = new QueryRunner();
+
+		qr.update(ManagerThreadLocal.getConnection(),sql,num,productId);
+	}
 	}
 
 

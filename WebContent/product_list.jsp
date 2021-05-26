@@ -68,7 +68,7 @@
 										
 										<!-- 分页功能实现 -->
 										<c:forEach begin="1" end="${pageResult.totlaPage }" var="i">
-											<li><a href="${pageContext.request.contextPath }/showProductByPage?category=${category}&page=${i}">${i }</a></li>
+											<li><a href="${pageContext.request.contextPath }/showProductByPage?category=${category}&page=${i}">${i}</a></li>
 										</c:forEach>
 										
 										<!-- 跳转下一页功能实现 -->

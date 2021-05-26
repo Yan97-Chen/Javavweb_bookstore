@@ -1,6 +1,8 @@
 package com.cyd.bookstore.model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable{
 	private int id;
 	private String name;//书名
 	private double price;//价格

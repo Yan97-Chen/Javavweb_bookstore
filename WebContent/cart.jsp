@@ -49,17 +49,42 @@
 											<table width="100%" border="0" cellspacing="0">
 											<!-- 存一个总价格的变量 -->
 											< <c:set var="totalPrice" value="0"></c:set>
-											<c:forEach items="${cart }" var="entry">
+											<c:forEach items="${cart }" var="entry" varStatus="vs">
 												<tr>
-													<td width="10%">1</td>
+													<td width="10%">${vs.count }</td>
 													<td width="30%">${entry.key.name}</td>
 
 													<td width="10%">${entry.key.price }</td>
-													<td width="20%"><input type="button" value='-'
-														style="width: 20px"> <input name="text"
-														type="text" value=${entry.value }
-														style="width: 40px; text-align: center" /> <input
-														type="button" value='+' style="width: 20px"></td>
+													<td width="20%">
+													<input type="button" value='-' style="width: 20px" onclick="changeNum(${entry.key.id},${entry.value - 1},${entry.key.pnum })">
+													<input name="text" type="text" value=${entry.value } style="width: 40px; text-align: center" /> 
+													<input type="button" value='+' style="width: 20px" onclick="changeNum(${entry.key.id},${entry.value + 1},${entry.key.pnum })">
+													<script type="text/javascript">
+														//id---商品的id
+														//num---更改后的购物数量
+														//pnum---库存
+														
+														function changeNum(id,num,pnum){
+															//alert(id + "-" + num + "-" + pnum);
+															//1.购买数量不能大于库存
+															if(num > pnum){
+																alert('购买数量不能大于库存');
+																return;
+															}
+															//2.如果购买数量为0，从购物车移除，提示用户
+															if(num == 0){
+																var b = confirm('您确定要移除该商品吗？');
+																if(b == false){
+																	return;
+																}
+															}
+															
+															//3.如果可以进行加减，对session的购物车数据进行更新
+															//alert('更新session的购物车数据')；
+															location.href = '${pageContext.request.contextPath}/changeNum?id='+id+'&num='+num;
+														}
+													</script>
+													</td>
 													<td width="10%">${entry.key.pnum }</td>
 													<td width="10%">${entry.key.price * entry.value}</td>
 
@@ -81,7 +106,7 @@
 											</table>
 											<div style="text-align: right; margin-top: 10px">
 												<a href="product_list.jsp"><img src="images/gwc_jx.gif"
-													border="0" /> </a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="order.jsp"><img
+													border="0" /> </a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/settleAccount"><img
 													src="images/gwc_buy.gif" border="0" /> </a>
 											</div>
 										</td>
